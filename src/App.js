@@ -17,7 +17,6 @@ class App extends Component {
       regional: [],
       states: [],
       national: [],
-      percentageIndustries: []
     }
   }
 
@@ -39,11 +38,25 @@ class App extends Component {
           states: d.trend_comparison.state,
           national: d.trend_comparison.nation,
 
-
-
           nationalChange: d.summary.jobs_growth.national_avg,
           regionalRate: d.summary.earnings.regional,
           nationalRate: d.summary.earnings.national_avg,
+          chartData: {
+            labels: [2013, 2014, 2015, 2016, 2017, 2018],
+    
+            datasets: [
+              {
+                label: 'Regional',
+                data: d.trend_comparison.regional,
+                fill: false
+              },
+              {
+                label: 'State',
+                data: d.trend_comparison.state,
+                fill: false
+              }
+            ]
+          }
         });
       });
   }
@@ -60,7 +73,7 @@ class App extends Component {
             <hr/>
             <Summary regionalJobs={this.state.summary} summaryYear={this.state.summary} statement={this.state.statement} regionalChange={this.state.regionalChange} yearlyRange={this.state.jobsGrowth} nationalChange={this.state.nationalChange} regionalRate={this.state.regionalRate} nationalRate={this.state.nationalRate} />
             <hr/>
-            <Chart />
+            <Chart chartData={this.state.chartData}/>
             <RegionalTable regions={this.state.regional} states={this.state.states} nation={this.state.national}/>
             <p><strong>Industries Employing {this.state.job}</strong></p>
             <hr/>
