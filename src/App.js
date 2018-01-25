@@ -3,7 +3,7 @@ import './App.css';
 import Summary from './components/occupation-summary';
 import GrowthTable from './components/growthTable';
 import RegionalTable from './components/regionalTable';
-import Chart from './components/graph'
+import Chart from './components/graph';
 
 
 class App extends Component {
@@ -24,6 +24,32 @@ class App extends Component {
     fetch('http://www.mocky.io/v2/5a29b5672e00004a3ca09d33')
       .then(res => res.json())
       .then(d => {
+
+        let regionalValues = d.trend_comparison.regional;
+        let stateValues = d.trend_comparison.state;
+        let nationalValues= d.trend_comparison.nation;
+        let regional = [], state = [], national = [];
+
+        function storeGraphValues(a, areaType, length) {
+          let i;
+          for (i = length - 1; i >= 0; i--) {
+            if (areaType === 'r') {
+              a[i] = (1 - (regionalValues[i] / regionalValues[0])) * -100;
+            } else if (areaType === 's') {
+              a[i] = (1 - (stateValues[i] / stateValues[0])) * -100;
+            } else if (areaType === 'n') {
+              a[i] = (1 - (nationalValues[i] / nationalValues[0])) * -100;
+            }
+          }
+          return a;
+        }
+
+        storeGraphValues(regional, 'r', regionalValues.length);
+        storeGraphValues(state, 's', stateValues.length);
+        storeGraphValues(national, 'n', nationalValues.length);
+
+        console.log(nationalValues.length)
+
         this.setState({
           job: d.occupation.title,
           location: d.region.title,
@@ -42,20 +68,35 @@ class App extends Component {
           regionalRate: d.summary.earnings.regional,
           nationalRate: d.summary.earnings.national_avg,
           chartData: {
-            labels: [2013, 2014, 2015, 2016, 2017, 2018],
+            labels: [2013, 2014, 2015, 2016, 2017],
     
             datasets: [
               {
-                label: 'Regional',
-                data: d.trend_comparison.regional,
-                fill: false
+                label: 'Region',
+                data: regional,
+                fill: false,
+                borderColor: '#000f71',
+                lineTension: 0
               },
               {
                 label: 'State',
-                data: d.trend_comparison.state,
-                fill: false
+                data: state,
+                fill: false,
+                borderColor: '#43a9d1',
+                lineTension: 0,
+                pointStyle: 'rect',
+                pointRadius: 5
+              },
+              {
+                label: 'Nation',
+                data: national,
+                fill: false,
+                borderColor: '#c8edff',
+                lineTension: 0,
+                pointStyle: 'triangle',
+                pointRadius: 5
               }
-            ]
+            ],
           }
         });
       });

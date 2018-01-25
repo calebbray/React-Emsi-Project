@@ -5,7 +5,32 @@ class Chart extends Component {
   render() {
       return (
             <div className="line-chart">
-              <Line data={this.props.chartData} height={100}/>
+              <Line 
+                data={this.props.chartData} 
+                options={{
+                  legend: {
+                    display: false
+                  },
+                  tooltips: {
+                    enabled: false
+                  },
+                  hover: {
+                    mode: null
+                  },
+                  title: {
+                    text: 'Percentage Change',
+                    position: 'left',
+                    display: true
+                  },
+                  scales: {
+                    yAxes: [{
+                      gridlines: {
+                        display: false
+                      }
+                    }]
+                  }
+                }} 
+                height={100}/>
             </div>
       );
     }
