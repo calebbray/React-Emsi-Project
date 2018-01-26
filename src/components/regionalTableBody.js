@@ -6,9 +6,9 @@ class RegionalTablebody extends Component {
             <tr>
               <td className="left-column">Region</td>
               <td className="right-column">{this.props.regional[0]}</td>
-              <td className="right-column">{this.props.regional[this.props.regional.length-1]}</td>
-              <td className="right-column">{(this.props.regional[this.props.regional.length-1] - this.props.regional[0])}</td>
-              <td className="right-column">{((1 - (this.props.regional[this.props.regional.length-1] / this.props.regional[0])) * -100).toFixed(1)}%</td>
+              <td className="right-column">{this.props.regional[this.props.regional.length-2]}</td>
+              <td className="right-column">{(this.props.regional[this.props.regional.length-2] - this.props.regional[0])}</td>
+              <td className="right-column">{((1 - (this.props.regional[this.props.regional.length-2] / this.props.regional[0])) * -100).toFixed(1)}%</td>
             </tr>
       );
     }

@@ -9,14 +9,14 @@ class GrowthTable extends Component {
         if (this.props.industries) {
             headerItems = this.props.industries.map(industry => {
                 return (
-                        <Tablebody key={industry.title} industry={industry}/>
+                        <Tablebody key={industry.title} industry={industry} employing_industry_jobs={this.props.employing_industries_jobs}/>
                 )
             })
         }
         return (
             <div>
                 <table width="100%">
-                    <TopRow />
+                    <TopRow targetYear={this.props.targetYear}/>
                     <tbody>
                         {headerItems}
                     </tbody>

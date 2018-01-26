@@ -6,7 +6,7 @@ class Rates extends Component {
             <div>
                 <p>${this.props.regionalRate}/hr</p>
                 <p>Median Hourly Earnings</p>
-                <p>Nation: ${this.props.nationalRate}/hr</p>
+                <p>Nation: ${this.props.nationalRate}0/hr</p>
             </div>
       );
     }

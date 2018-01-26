@@ -28,9 +28,9 @@ class App extends Component {
         let regionalValues = d.trend_comparison.regional;
         let stateValues = d.trend_comparison.state;
         let nationalValues= d.trend_comparison.nation;
-        let regional = [], state = [], national = [];
+        let regional = [], state = [], national = [], years = [];
 
-        function storeGraphValues(a, areaType, length) {
+        let storeGraphValues = (a, areaType, length) => {
           let i;
           for (i = length - 1; i >= 0; i--) {
             if (areaType === 'r') {
@@ -44,20 +44,32 @@ class App extends Component {
           return a;
         }
 
+        let getYears = (start, end, a) => {
+          let i = 0;
+          while (start <= end) {
+            a[i] = start;
+            i++;
+            start++;
+          }
+          return a;
+        }
+
         storeGraphValues(regional, 'r', regionalValues.length);
         storeGraphValues(state, 's', stateValues.length);
         storeGraphValues(national, 'n', nationalValues.length);
 
-        console.log(nationalValues.length)
+        getYears(d.trend_comparison.start_year, d.trend_comparison.end_year - 1, years);
 
         this.setState({
+          /******************* Top of the page ********************/
           job: d.occupation.title,
           location: d.region.title,
+          /********************************************************/
 
           summary: d.summary.jobs,
           statement: (d.summary.jobs.regional / d.summary.jobs.national_avg * 100).toFixed(0),
           jobsGrowth: d.summary.jobs_growth,
-          regionalChange: d.summary.jobs_growth.regional,
+          regionalChange: ((d.trend_comparison.regional[d.trend_comparison.regional.length - 2]/d.trend_comparison.regional[0] - 1) * 100).toFixed(1),
           industries: d.employing_industries.industries,
 
           regional: d.trend_comparison.regional,
@@ -67,8 +79,9 @@ class App extends Component {
           nationalChange: d.summary.jobs_growth.national_avg,
           regionalRate: d.summary.earnings.regional,
           nationalRate: d.summary.earnings.national_avg,
+          /******************* Chart Data *************************/
           chartData: {
-            labels: [2013, 2014, 2015, 2016, 2017],
+            labels: years,
     
             datasets: [
               {
@@ -97,7 +110,16 @@ class App extends Component {
                 pointRadius: 5
               }
             ],
-          }
+          },
+          /********************************************************/
+
+          /*************** Growth Table ***************************/
+
+          employing_industries_jobs: d.employing_industries.jobs,
+          targetYear: d.employing_industries.year,
+
+          /********************************************************/
+
         });
       });
   }
@@ -118,7 +140,7 @@ class App extends Component {
             <RegionalTable regions={this.state.regional} states={this.state.states} nation={this.state.national}/>
             <p><strong>Industries Employing {this.state.job}</strong></p>
             <hr/>
-            <GrowthTable industries={this.state.industries}/>
+            <GrowthTable industries={this.state.industries} targetYear={this.state.targetYear} employing_industries_jobs={this.state.employing_industries_jobs} />
         </main>
 
       </div>

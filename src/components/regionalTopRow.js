@@ -15,7 +15,7 @@ class RegionalTopRow extends Component {
                 <tr>
                     <th className="left-column">Region</th>
                     <th className="right-column">{this.state.startYear} Jobs</th>
-                    <th className="right-column">{this.state.endYear} Jobs</th>
+                    <th className="right-column">{this.state.endYear-1} Jobs</th>
                     <th className="right-column">Change</th>
                     <th className="right-column">%Change</th>
                 </tr>
